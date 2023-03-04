@@ -23,6 +23,7 @@ model Wallet {
   mainCardId Int
 
   walletCategories WalletCategory[]
+  purchases Purchase[]
 }
 
 // Pivot table
@@ -43,4 +44,16 @@ model Category {
   name String @unique
 
   walletCategories WalletCategory[]
+  purchases Purchase[]
+}
+
+model Purchase {
+  id Int @id @default(autoincrement())
+  amount Decimal @default(0)
+
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+
+  wallet Wallet @relation(fields: [walletId], references: [id])
+  walletId Int
 }
