@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model MainCard {
+  id Int @id @default(autoincrement())
+  cardNumber String @unique
+  currentAmount Decimal @default(0)
+
+  wallets Wallet[]
+}
+
+model Wallet {
+  id Int @id @default(autoincrement())
+  name String @unique
+
+  mainCard MainCard @relation(fields: [mainCardId], references: [id])
+  mainCardId Int
+
+  walletCategories WalletCategory[]
+}
+
+// Pivot table
+model WalletCategory {
+  id Int @id @default(autoincrement())
+
+  walletId Int
+  wallet Wallet @relation(fields: [walletId], references: [id])
+
+  categoryId Int
+  category Category @relation(fields: [categoryId], references: [id])
+
+  limitAmount Decimal @default(0)
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  name String @unique
+
+  walletCategories WalletCategory[]
+}
