@@ -32,18 +32,20 @@ export class WalletsService {
         walletCategories: {
           select: {
             limitAmount: true,
-            category: {
-              select: {
-                name: true,
-              },
-            },
+            category: true,
+          },
+        },
+        purchases: {
+          include: {
+            category: true,
           },
         },
       },
     });
 
     if (!wallet) throw new NotFoundException('Wallet is not found.');
-    return wallet;
+    const { purchases, ...rest } = wallet;
+    return { ...rest, history: purchases };
   }
 
   /**

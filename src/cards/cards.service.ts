@@ -29,12 +29,32 @@ export class CardsService {
     const card = await this.prisma.mainCard.findUnique({
       where: { id },
       include: {
-        wallets: true,
+        wallets: {
+          include: {
+            purchases: {
+              select: {
+                id: true,
+                createdAt: true,
+                amount: true,
+                wallet: true,
+                category: true,
+              },
+            },
+          },
+        },
       },
     });
 
     if (!card) throw new NotFoundException('The card was not found!');
-    return card;
+
+    // combine the purchases each of the cards into one history field for the whole card
+    const history = card.wallets.reduce((purchases, wallet) => {
+      return purchases.concat(wallet.purchases);
+    }, []);
+
+    // delete the purchases from each wallet
+    card.wallets.map((wallet) => delete wallet.purchases);
+    return { ...card, history };
   }
 
   /**

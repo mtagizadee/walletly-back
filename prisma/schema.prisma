@@ -56,4 +56,6 @@ model Purchase {
 
   wallet Wallet @relation(fields: [walletId], references: [id])
   walletId Int
+
+  createdAt DateTime @default(now())
 }
