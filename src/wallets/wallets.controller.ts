@@ -29,4 +29,7 @@ export class WalletsController {
   create(@Body() createWalletDto: CreateWalletDto) {
     return this.walletsService.create(createWalletDto);
   }
+
+  @Post('assign-category')
+  assignCategory() {}
 }
