@@ -1,7 +1,16 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { CardsService } from './cards.service';
-import { CreateCardDto } from "./dto/create-card.dto";
+import { CreateCardDto } from './dto/create-card.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('cards')
 @Controller('cards')
 export class CardsController {
   constructor(private readonly cardsService: CardsService) {}

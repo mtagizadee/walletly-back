@@ -7,5 +7,5 @@ export class CreateCardDto {
 
   @IsOptional()
   @IsDecimal()
-  currentAmount: number;
+  currentAmount: string;
 }

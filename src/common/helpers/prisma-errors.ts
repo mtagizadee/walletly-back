@@ -12,4 +12,8 @@ export class PrismaErrors {
   static isUniqueConstraintError(error) {
     return error.code === 'P2002';
   }
+
+  static isForeignConstraintError(error) {
+    return error.code === 'P2003';
+  }
 }

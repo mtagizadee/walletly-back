@@ -37,6 +37,12 @@ export class CardsService {
     return card;
   }
 
+  /**
+   * Creates a new card
+   * @param createCardDto - data for the creation of the card
+   * @returns created card
+   * @throws ConflictException - if the card already exists
+   */
   async create(createCardDto: CreateCardDto) {
     try {
       return await this.prisma.mainCard.create({
