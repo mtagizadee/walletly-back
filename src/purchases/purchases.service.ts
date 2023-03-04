@@ -60,6 +60,8 @@ export class PurchasesService {
           },
         });
       }
+
+      return { message: 'Purchase was successfully created.' };
     } catch (error) {
       if (PrismaErrors.isPrismaError(error)) {
         if (PrismaErrors.isForeignConstraintError(error)) {
