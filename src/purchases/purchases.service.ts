@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { LocalPrismaService } from '../local-prisma/local-prisma.service';
 import { CreatePurchaseDto } from './dto/create-purchase.dto';
 import { PrismaErrors } from '../common/helpers/prisma-errors';
+import { addPurchase, removePurchase } from './helpers';
 
 @Injectable()
 export class PurchasesService {
@@ -19,9 +20,46 @@ export class PurchasesService {
    */
   async create(createPurchaseDto: CreatePurchaseDto) {
     try {
-      return await this.prisma.purchase.create({
+      const purchase = await this.prisma.purchase.create({
         data: createPurchaseDto,
+        include: {
+          wallet: {
+            include: {
+              mainCard: true,
+              walletCategories: {
+                where: {
+                  categoryId: createPurchaseDto.categoryId,
+                },
+              },
+            },
+          },
+        },
       });
+
+      await this.prisma.mainCard.update({
+        where: { id: purchase.wallet.mainCard.id },
+        data: {
+          currentAmount: removePurchase(
+            purchase.wallet.mainCard.currentAmount,
+            purchase.amount,
+          ),
+        },
+      });
+
+      // if there was a assignment between wallet and category then add the purchase amount
+      // to the current spent amount
+      if (purchase.wallet.walletCategories.length) {
+        const walletCategory = purchase.wallet.walletCategories[0];
+        await this.prisma.walletCategory.update({
+          where: { id: walletCategory.id },
+          data: {
+            currentSpentAmount: addPurchase(
+              walletCategory.currentSpentAmount,
+              createPurchaseDto.amount as any,
+            ),
+          },
+        });
+      }
     } catch (error) {
       if (PrismaErrors.isPrismaError(error)) {
         if (PrismaErrors.isForeignConstraintError(error)) {

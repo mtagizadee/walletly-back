@@ -37,6 +37,7 @@ model WalletCategory {
   category Category @relation(fields: [categoryId], references: [id])
 
   limitAmount Decimal @default(0)
+  currentSpentAmount Decimal @default(0)
 }
 
 model Category {

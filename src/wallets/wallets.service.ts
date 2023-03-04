@@ -35,6 +35,7 @@ export class WalletsService {
           select: {
             id: true,
             limitAmount: true,
+            currentSpentAmount: true,
             category: true,
           },
         },
