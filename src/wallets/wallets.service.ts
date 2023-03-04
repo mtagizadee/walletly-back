@@ -6,6 +6,7 @@ import {
 import { LocalPrismaService } from '../local-prisma/local-prisma.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { PrismaErrors } from '../common/helpers/prisma-errors';
+import { AssignCategoryDto } from './dto/assign-category.dto';
 
 @Injectable()
 export class WalletsService {
@@ -68,6 +69,28 @@ export class WalletsService {
 
         if (PrismaErrors.isForeignConstraintError(error)) {
           throw new NotFoundException('The card does not exist.');
+        }
+      }
+
+      throw error;
+    }
+  }
+
+  /**
+   * Assigns a category to a wallet
+   * @param assignCategoryDto - data to assign the category to the wallet
+   * @returns created assignment
+   * @throw NotFoundException
+   */
+  async assignCategory(assignCategoryDto: AssignCategoryDto) {
+    try {
+      return await this.prisma.walletCategory.create({
+        data: assignCategoryDto,
+      });
+    } catch (error) {
+      if (PrismaErrors.isPrismaError(error)) {
+        if (PrismaErrors.isForeignConstraintError(error)) {
+          throw new NotFoundException('Category or wallet does not exist.');
         }
       }
 

@@ -9,6 +9,7 @@ import {
 import { WalletsService } from './wallets.service';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateWalletDto } from './dto/create-wallet.dto';
+import { AssignCategoryDto } from './dto/assign-category.dto';
 
 @ApiTags('wallets')
 @Controller('wallets')
@@ -31,5 +32,7 @@ export class WalletsController {
   }
 
   @Post('assign-category')
-  assignCategory() {}
+  assignCategory(@Body() assignCategoryDto: AssignCategoryDto) {
+    return this.walletsService.assignCategory(assignCategoryDto);
+  }
 }
