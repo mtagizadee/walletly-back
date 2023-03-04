@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -32,6 +33,7 @@ export class WalletsService {
       include: {
         walletCategories: {
           select: {
+            id: true,
             limitAmount: true,
             category: true,
           },
@@ -80,7 +82,7 @@ export class WalletsService {
    * Assigns a category to a wallet
    * @param assignCategoryDto - data to assign the category to the wallet
    * @returns created assignment
-   * @throw NotFoundException
+   * @throws NotFoundException
    */
   async assignCategory(assignCategoryDto: AssignCategoryDto) {
     try {
@@ -91,6 +93,57 @@ export class WalletsService {
       if (PrismaErrors.isPrismaError(error)) {
         if (PrismaErrors.isForeignConstraintError(error)) {
           throw new NotFoundException('Category or wallet does not exist.');
+        }
+      }
+
+      throw error;
+    }
+  }
+
+  /**
+   * Updates assigned category
+   * @param id - id of the assignment that needs to be changed
+   * @param updateCategoryAssignment - data to update the assignment
+   * @returns updated assignment
+   * @throws NotFoundException - if the assignment was not found
+   * @throws BadRequestException - if the category to update does not exist
+   */
+  async updateCategoryAssignment(id: number, updateCategoryAssignment) {
+    try {
+      return await this.prisma.walletCategory.update({
+        where: { id },
+        data: updateCategoryAssignment,
+      });
+    } catch (error) {
+      if (PrismaErrors.isPrismaError(error)) {
+        if (PrismaErrors.isNotFoundError(error)) {
+          throw new NotFoundException('Assignment was not found.');
+        }
+
+        if (PrismaErrors.isForeignConstraintError(error)) {
+          throw new BadRequestException('Category does not exist.');
+        }
+      }
+
+      throw error;
+    }
+  }
+
+  /**
+   * Deletes a category assignment
+   * @param id - id of the assignment to delete
+   * @returns deleted assignment
+   * @throws NotFoundException - if the assignment was not found
+   */
+  async deleteCategoryAssignment(id: number) {
+    try {
+      return await this.prisma.walletCategory.delete({
+        where: { id },
+      });
+    } catch (error) {
+      if (PrismaErrors.isPrismaError(error)) {
+        if (PrismaErrors.isNotFoundError(error)) {
+          throw new NotFoundException('Assignment was not found.');
         }
       }
 
