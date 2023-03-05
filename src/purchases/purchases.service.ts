@@ -3,10 +3,14 @@ import { LocalPrismaService } from '../local-prisma/local-prisma.service';
 import { CreatePurchaseDto } from './dto/create-purchase.dto';
 import { PrismaErrors } from '../common/helpers/prisma-errors';
 import { addPurchase, removePurchase } from './helpers';
+import { LocalFirebaseService } from '../local-firebase/local-firebase.service';
 
 @Injectable()
 export class PurchasesService {
-  constructor(private readonly prisma: LocalPrismaService) {}
+  constructor(
+    private readonly prisma: LocalPrismaService,
+    private readonly firebaseService: LocalFirebaseService,
+  ) {}
 
   async findAll() {
     return this.prisma.purchase.findMany();
@@ -50,6 +54,7 @@ export class PurchasesService {
       // to the current spent amount
       if (purchase.wallet.walletCategories.length) {
         const walletCategory = purchase.wallet.walletCategories[0];
+
         await this.prisma.walletCategory.update({
           where: { id: walletCategory.id },
           data: {
@@ -59,6 +64,8 @@ export class PurchasesService {
             ),
           },
         });
+
+
       }
 
       return { message: 'Purchase was successfully created.' };
