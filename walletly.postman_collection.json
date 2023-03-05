@@ -1,0 +1,336 @@
+{
+	"info": {
+		"_postman_id": "7c043a3d-5ad5-42c2-9892-9d5120276ec8",
+		"name": "ufaz-hackaton-2023",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26090440"
+	},
+	"item": [
+		{
+			"name": "walletly",
+			"item": [
+				{
+					"name": "cards",
+					"item": [
+						{
+							"name": "findAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/cards",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"cards"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findOne",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/cards/1",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"cards",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cardNumber\": \"4104021502260363\",\n    \"currentAmount\": \"105\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/cards",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"cards"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "wallets",
+					"item": [
+						{
+							"name": "findAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/wallets",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"wallets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "findOne",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/wallets/16",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"wallets",
+										"16"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Son\",\n    \"mainCardId\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/wallets",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"wallets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "assignCategory",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"limitAmount\": \"1\",\n    \"categoryId\": 1,\n    \"walletId\": 16\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/wallets/assignment",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"wallets",
+										"assignment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateCategoryAssignment",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"limitAmount\": 3\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/wallets/assignment/7",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"wallets",
+										"assignment",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteCategoryAssignment",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/wallets/assignment/7",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"wallets",
+										"assignment",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "testLimits",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/wallets/test/limits",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"wallets",
+										"test",
+										"limits"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "categories",
+					"item": [
+						{
+							"name": "findAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/categories",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"education\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/categories",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"categories"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "purchases",
+					"item": [
+						{
+							"name": "findAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/purchases",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"purchases"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"amount\": \"5\",\n    \"walletId\": 20,\n    \"categoryId\": 10\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/purchases",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"purchases"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
