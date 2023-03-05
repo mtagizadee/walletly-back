@@ -10,9 +10,10 @@ import { PrismaErrors } from '../common/helpers/prisma-errors';
 import { AssignCategoryDto } from './dto/assign-category.dto';
 import { FilterHistoryDto } from './dto/filter-history.dto';
 import { THistoryDuration } from './types/history-duration.type';
-import { durationType2Date } from './helpers';
+import { calculateStatistics, durationType2Date } from './helpers';
 import { LIMIT_RATE } from './constants';
 import { getMessaging } from 'firebase/messaging';
+import { addPurchase } from '../purchases/helpers';
 
 @Injectable()
 export class WalletsService {
@@ -59,7 +60,12 @@ export class WalletsService {
 
     if (!wallet) throw new NotFoundException('Wallet is not found.');
     const { purchases, ...rest } = wallet;
-    return { ...rest, history: purchases };
+
+    return {
+      ...rest,
+      history: purchases,
+      statistics: calculateStatistics(purchases),
+    };
   }
 
   /**
