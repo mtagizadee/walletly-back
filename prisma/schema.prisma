@@ -19,7 +19,7 @@ model Wallet {
   id Int @id @default(autoincrement())
   name String @unique
 
-  mainCard MainCard @relation(fields: [mainCardId], references: [id])
+  mainCard MainCard @relation(fields: [mainCardId], references: [id], onDelete: Cascade)
   mainCardId Int
 
   walletCategories WalletCategory[]
@@ -31,10 +31,10 @@ model WalletCategory {
   id Int @id @default(autoincrement())
 
   walletId Int
-  wallet Wallet @relation(fields: [walletId], references: [id])
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
 
   categoryId Int
-  category Category @relation(fields: [categoryId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   limitAmount Decimal @default(0)
   currentSpentAmount Decimal @default(0)
@@ -52,10 +52,10 @@ model Purchase {
   id Int @id @default(autoincrement())
   amount Decimal @default(0)
 
-  category Category @relation(fields: [categoryId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId Int
 
-  wallet Wallet @relation(fields: [walletId], references: [id])
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
   walletId Int
 
   createdAt DateTime @default(now())
