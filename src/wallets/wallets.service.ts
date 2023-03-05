@@ -1,16 +1,12 @@
-import {
-  BadRequestException,
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { LocalPrismaService } from '../local-prisma/local-prisma.service';
-import { CreateWalletDto } from './dto/create-wallet.dto';
-import { PrismaErrors } from '../common/helpers/prisma-errors';
-import { AssignCategoryDto } from './dto/assign-category.dto';
-import { FilterHistoryDto } from './dto/filter-history.dto';
-import { THistoryDuration } from './types/history-duration.type';
-import { durationType2Date } from './helpers';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { LocalPrismaService } from "../local-prisma/local-prisma.service";
+import { CreateWalletDto } from "./dto/create-wallet.dto";
+import { PrismaErrors } from "../common/helpers/prisma-errors";
+import { AssignCategoryDto } from "./dto/assign-category.dto";
+import { FilterHistoryDto } from "./dto/filter-history.dto";
+import { THistoryDuration } from "./types/history-duration.type";
+import { durationType2Date } from "./helpers";
+import { LIMIT_RATE } from "./constants";
 
 @Injectable()
 export class WalletsService {
@@ -158,5 +154,24 @@ export class WalletsService {
 
       throw error;
     }
+  }
+
+  /**
+   * Finds all the assignments that are close to the limit
+   * @returns founded assignments
+   */
+  async findCloseLimits() {
+    const assignments = await this.prisma.walletCategory.findMany({
+      include: {
+        wallet: true,
+        category: true,
+      },
+    });
+
+    return assignments.filter(
+      (assignment) =>
+        Number(assignment.limitAmount) * LIMIT_RATE <=
+        Number(assignment.currentSpentAmount),
+    );
   }
 }

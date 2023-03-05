@@ -1,0 +1,1 @@
+export const LIMIT_RATE = 0.8;

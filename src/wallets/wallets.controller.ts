@@ -8,6 +8,7 @@ import {
   Post,
   Delete,
   Query,
+  Sse,
 } from '@nestjs/common';
 import { WalletsService } from './wallets.service';
 import { ApiTags } from '@nestjs/swagger';
@@ -58,5 +59,10 @@ export class WalletsController {
   @Delete('assignment/:id')
   deleteCategoryAssignment(@Param('id', ParseIntPipe) id: number) {
     return this.walletsService.deleteCategoryAssignment(id);
+  }
+
+  @Get('test/limits')
+  notifyCloseLimits() {
+    return this.walletsService.findCloseLimits();
   }
 }
