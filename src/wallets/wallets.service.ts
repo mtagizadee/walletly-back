@@ -85,6 +85,8 @@ export class WalletsService {
           }),
         ),
       );
+
+      return wallet;
     } catch (error) {
       if (PrismaErrors.isPrismaError(error)) {
         if (PrismaErrors.isUniqueConstraintError(error)) {
