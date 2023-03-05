@@ -20,6 +20,18 @@ export const durationType2Date = (duration: THistoryDuration) => {
   }
 };
 
+const statistics2MapArray = (statistics) => {
+  const keys = Object.keys(statistics);
+
+  const result = [];
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    result.push({ category: key, amount: statistics[key] });
+  }
+
+  return result;
+};
+
 export const calculateStatistics = (purchases) => {
   // collect the statistics from the purchases
   const statistics = {};
@@ -41,5 +53,5 @@ export const calculateStatistics = (purchases) => {
     }
   }
 
-  return statistics;
+  return statistics2MapArray(statistics);
 };

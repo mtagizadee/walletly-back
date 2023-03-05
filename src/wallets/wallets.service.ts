@@ -12,8 +12,6 @@ import { FilterHistoryDto } from './dto/filter-history.dto';
 import { THistoryDuration } from './types/history-duration.type';
 import { calculateStatistics, durationType2Date } from './helpers';
 import { LIMIT_RATE } from './constants';
-import { getMessaging } from 'firebase/messaging';
-import { addPurchase } from '../purchases/helpers';
 
 @Injectable()
 export class WalletsService {
