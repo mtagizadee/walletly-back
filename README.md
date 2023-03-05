@@ -19,3 +19,6 @@
 ## Other documentations that we provide
 - If you are running code in the localhost then you can see the swagger documentation by entering the base url in a browser.
 - Also if you have any questions about the database system please have a look at the UML diagram that is also provided in the .zip archive.
+
+## GitHub repository
+https://github.com/mtagizadee/walletly-back
