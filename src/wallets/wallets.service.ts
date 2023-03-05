@@ -71,9 +71,20 @@ export class WalletsService {
    */
   async create(createWalletDto: CreateWalletDto) {
     try {
-      return await this.prisma.wallet.create({
+      const wallet = await this.prisma.wallet.create({
         data: createWalletDto,
       });
+
+      const categories = await this.prisma.category.findMany();
+      await Promise.all(
+        categories.map((category) =>
+          this.assignCategory({
+            categoryId: category.id,
+            walletId: wallet.id,
+            limitAmount: '0',
+          }),
+        ),
+      );
     } catch (error) {
       if (PrismaErrors.isPrismaError(error)) {
         if (PrismaErrors.isUniqueConstraintError(error)) {
