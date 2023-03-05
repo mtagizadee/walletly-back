@@ -7,12 +7,14 @@ import {
   Patch,
   Post,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { WalletsService } from './wallets.service';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { AssignCategoryDto } from './dto/assign-category.dto';
 import { UpdateCategoryAssignmentDto } from './dto/update-category-assignment.dto';
+import { FilterHistoryDto } from './dto/filter-history.dto';
 
 @ApiTags('wallets')
 @Controller('wallets')
@@ -25,8 +27,11 @@ export class WalletsController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.walletsService.findOne(id);
+  findOne(
+    @Param('id', ParseIntPipe) id: number,
+    @Query() filterHistoryDto: FilterHistoryDto,
+  ) {
+    return this.walletsService.findOne(id, filterHistoryDto);
   }
 
   @Post()

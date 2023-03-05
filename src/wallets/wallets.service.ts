@@ -8,6 +8,9 @@ import { LocalPrismaService } from '../local-prisma/local-prisma.service';
 import { CreateWalletDto } from './dto/create-wallet.dto';
 import { PrismaErrors } from '../common/helpers/prisma-errors';
 import { AssignCategoryDto } from './dto/assign-category.dto';
+import { FilterHistoryDto } from './dto/filter-history.dto';
+import { THistoryDuration } from './types/history-duration.type';
+import { durationType2Date } from './helpers';
 
 @Injectable()
 export class WalletsService {
@@ -24,10 +27,14 @@ export class WalletsService {
   /**
    * Finds a wallet by its id
    * @param id - id of the wallet that is asked to find
+   * @param filterHistoryDto - data to filter the history of purchases
    * @returns founded wallet
    * @throws NotFoundException - if the wallet was not found
    */
-  async findOne(id: number) {
+  async findOne(id: number, filterHistoryDto: FilterHistoryDto) {
+    const duration: THistoryDuration = filterHistoryDto.duration ?? 'lw';
+    const minDate = durationType2Date(duration);
+
     const wallet = await this.prisma.wallet.findUnique({
       where: { id },
       include: {
@@ -40,9 +47,10 @@ export class WalletsService {
           },
         },
         purchases: {
-          include: {
-            category: true,
+          where: {
+            createdAt: { gte: minDate },
           },
+          include: { category: true },
         },
       },
     });
