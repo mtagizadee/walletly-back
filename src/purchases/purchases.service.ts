@@ -3,14 +3,10 @@ import { LocalPrismaService } from '../local-prisma/local-prisma.service';
 import { CreatePurchaseDto } from './dto/create-purchase.dto';
 import { PrismaErrors } from '../common/helpers/prisma-errors';
 import { addPurchase, removePurchase } from './helpers';
-import { LocalFirebaseService } from '../local-firebase/local-firebase.service';
 
 @Injectable()
 export class PurchasesService {
-  constructor(
-    private readonly prisma: LocalPrismaService,
-    private readonly firebaseService: LocalFirebaseService,
-  ) {}
+  constructor(private readonly prisma: LocalPrismaService) {}
 
   async findAll() {
     return this.prisma.purchase.findMany();
@@ -64,8 +60,6 @@ export class PurchasesService {
             ),
           },
         });
-
-
       }
 
       return { message: 'Purchase was successfully created.' };
